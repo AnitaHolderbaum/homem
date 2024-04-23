@@ -50,6 +50,14 @@
         </div>
     </body>
     <script>
+       document.getElementById('yes').addEventListener('click', function(){
+        let confirmationBalloon = document.createElement('div');
+        confirmationBalloon.className = 'confirmation-balloon';
+        confirmationBalloon.innerText = 'Tem certeza?';
+
+        let box = document.querySelector('.box');
+        box.appendChild(confirmationBalloon);
+    });
         let button = document.getElementById('no');
         let height = window.innerHeight - 50;
         let width = window.innerWidth - 50;
