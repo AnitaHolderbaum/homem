@@ -1,78 +1,63 @@
 <html>
-<head>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        a {
-            text-decoration: none;
-        }
-        .box {
-            font-size: 20px;
-            color: white;
-            height: 250px;
-            width: 350px;
-            border-radius: 10px;
-            background: #191919;
-            flex-direction: column;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .buttons-container {
-            display: flex;
-            justify-content: space-around;
-            height: 50px;
-            width: 15px;
-        }
-        button {
-            height: 30px;
-            width: 50px;
-            background: white;
-            border-radius: 5px;
-            color: blueviolet;
-            font-weight: 600;
-        }
-        .confirmation-balloon {
-            position: absolute;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            z-index: 1;
-        }
-    </style>
-</head>
-<body>
-    <div class="box">
-        <p>tá bravo comigo?</p>
-        <div class="buttons-container">
-            <button id="yes">Sim</button>
-            <button id="no">Não</button>
+    <head>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            a {
+                text-decoration: none;
+            }
+            .box {
+                font-size: 20px;
+                color: white;
+                height: 250px;
+                width: 350px;
+                border-radius: 10px;
+                background: #191919;
+                flex-direction: column;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .buttons-container {
+                display: flex;
+                justify-content: space-around;
+                height: 50px;
+                width: 15px;
+            }
+            button {
+                height: 30px;
+                width: 50px;
+                background: white;
+                border-radius: 5px;
+                color: blueviolet;
+                font-weight: 600;
+            }
+        </style>
+    </head>
+    <body>
+        <div clas="box">
+            <p>tá bravo comigo?</p>
+            <div class="buttons-container">
+                <button>
+                    <a href-"https://link.com">Sim</a>
+                </button>
+                <button id="no">Não</button>
+            </div>
         </div>
-    </div>
-</body>
-<script>
-    document.getElementById('yes').addEventListener('click', function(){
-        let confirmationBalloon = document.createElement('div');
-        confirmationBalloon.className = 'confirmation-balloon';
-        confirmationBalloon.innerText = 'Tem certeza?';
+    </body>
+    <script>
+        let button = document.getElementById('no');
+        let height = window.innerHeight - 50;
+        let width = window.innerWidth - 50;
 
-        let box = document.querySelector('.box');
-        box.appendChild(confirmationBalloon);
-    });
-
-    let button = document.getElementById('no');
-    let height = window.innerHeight - 50;
-    let width = window.innerWidth - 50;
-
-    button.addEventListener('mouseover', function(){
-        button.style.position = "absolute";
-        button.style.top = Math.random() * height + "px";
-        button.style.left = Math.random() * width + "px";
-    });
-</script>
+        button.addEventListener('mouseover', function(){
+            button.style.position = "absolute";
+            button.style.top = Math.random() * height + "px";
+            button.style.left = Math.random() * width + "px";
+        })
+    </script>
 </html>
