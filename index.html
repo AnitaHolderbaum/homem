@@ -10,9 +10,11 @@
             background: #121212;
             font-family: Arial, sans-serif;
         }
+
         a {
             text-decoration: none;
         }
+
         .box {
             font-size: 20px;
             color: white;
@@ -26,21 +28,29 @@
             justify-content: center;
             position: relative;
         }
+
+        .box p {
+            text-align: center;
+            margin: 0 20px 10px 20px;
+        }
+
         .buttons-container {
             display: flex;
             gap: 20px;
             margin-top: 20px;
         }
+
         button {
             height: 30px;
             width: 60px;
             background: white;
             border-radius: 5px;
-            color: blueviolet;
+            color: blue;
             font-weight: 600;
             border: none;
             cursor: pointer;
         }
+
         .info-box {
             display: none;
             position: absolute;
@@ -53,9 +63,28 @@
             text-align: center;
             width: 300px;
         }
+
+        /* Efeito de brilho */
+        .info-box.glow {
+            border: 2px solid #00f0ff;
+            box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+            }
+            100% {
+                box-shadow: 0 0 20px #00d9ff, 0 0 40px #00d9ff;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; pointer-events: none; z-index: 999;"></canvas>
+
     <div class="box">
         <p>Quer ir comemorar meu aniver comigo?</p>
         <div class="buttons-container">
@@ -73,8 +102,11 @@
         const buttonYes = document.getElementById('yes');
         const infoBox = document.getElementById('info');
 
-        let height = window.innerHeight - 50;
-        let width = window.innerWidth - 50;
+        const limitWidth = 1080;
+        const limitHeight = 1920;
+
+        const width = Math.min(window.innerWidth, limitWidth) - 60;
+        const height = Math.min(window.innerHeight, limitHeight) - 60;
 
         buttonNo.addEventListener('mouseover', function () {
             buttonNo.style.position = "absolute";
@@ -84,7 +116,75 @@
 
         buttonYes.addEventListener('click', function () {
             infoBox.style.display = "block";
+            infoBox.classList.add("glow"); // borda brilhante
+            startConfetti(); // confetes
         });
     </script>
+
+    <script>
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let confetti = [];
+
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 6 + 2,
+                    d: Math.random() * 10 + 5,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngle: 0,
+                    tiltAngleIncrement: Math.random() * 0.07 + 0.05
+                });
+            }
+        }
+
+        function drawConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confetti.forEach(c => {
+                ctx.beginPath();
+                ctx.lineWidth = c.r;
+                ctx.strokeStyle = c.color;
+                ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
+                ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
+                ctx.stroke();
+            });
+            updateConfetti();
+        }
+
+        function updateConfetti() {
+            confetti.forEach((c, i) => {
+                c.y += Math.cos(c.d) + 3;
+                c.tiltAngle += c.tiltAngleIncrement;
+                c.tilt = Math.sin(c.tiltAngle) * 15;
+
+                if (c.y > canvas.height) {
+                    confetti[i] = {
+                        ...c,
+                        x: Math.random() * canvas.width,
+                        y: -10
+                    };
+                }
+            });
+        }
+
+        let confettiInterval;
+
+        function startConfetti() {
+            createConfetti();
+            confettiInterval = setInterval(drawConfetti, 20);
+            setTimeout(() => {
+                clearInterval(confettiInterval);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confetti = [];
+            }, 3000); // dura 3 segundos
+        }
+    </script>
+
 </body>
 </html>
